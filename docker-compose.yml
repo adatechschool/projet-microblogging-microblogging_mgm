@@ -17,7 +17,6 @@ services:
         depends_on:
             - pgsql
             - selenium
-
     pgsql:
         image: "postgres:15"
         ports:
@@ -29,7 +28,7 @@ services:
             POSTGRES_PASSWORD: "${DB_PASSWORD:-secret}"
         volumes:
             - "microblogging-pgsql:/var/lib/postgresql/data"
-            - "/Users/Mathilde/Projets collectifs/projet_co-microbloding-mgm/vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql"
+            - "./vendor/laravel/sail/database/pgsql/create-testing-database.sql:/docker-entrypoint-initdb.d/10-create-testing-database.sql"
         networks:
             - microblogging
         healthcheck:
