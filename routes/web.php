@@ -19,6 +19,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// route posts
 Route::get('/posts/{id}', [PostController::class, 'show']);
 
 Route::get('/dashboard', function () {
