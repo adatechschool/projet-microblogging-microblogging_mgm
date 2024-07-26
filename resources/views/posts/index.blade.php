@@ -10,7 +10,7 @@
         @foreach($posts as $post)
             <li>
                 <a href="{{ url('/posts', $post->id) }}">{{ $post->title }}</a> 
-                {{-- by {{ $post->user->name }} --}}
+                by {{ $post->user->name }}
             </li>
         @endforeach
     </ul>
