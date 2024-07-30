@@ -16,6 +16,19 @@
                 <li>
                     <strong>{{ $post->title }}</strong><br>
                     {{ $post->body }}
+
+                    <!-- Bouton Like et compteur -->
+                    @if (auth()->user()->hasLiked($post))
+                        <form method="POST" action="{{ route('posts.unlike', $post->id) }}">
+                            @csrf
+                            <button type="submit">Unlike</button>
+                        </form>
+                    @else
+                        <form method="POST" action="{{ route('posts.like', $post->id) }}">
+                            @csrf
+                            <button type="submit">Like</button>
+                        </form>
+                    @endif
                 </li>
             @endforeach
         </ul>

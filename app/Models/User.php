@@ -45,9 +45,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // Relation pour les posts
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    // Relation pour les posts likés
+    public function likes()
+    {
+        return $this->belongsToMany(Post::class, 'likes');
+    }
+
+    public function hasLiked(Post $post)
+    {
+        return $this->likes->contains($post);
+    }
+
+    // Relation pour les abonnements
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
+    }
+
+    // Relation pour les préférences
+    public function hashtags()
+    {
+        return $this->morphToMany(Hashtag::class, 'hashtagable');
     }
 }
 

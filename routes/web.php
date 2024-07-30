@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,13 +21,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+//routes profile
+Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+
+// route pour mettre à jour hashtag user
+Route::post('/users/{user}/update-hashtags', [UserController::class, 'updateHashtags'])->name('users.update-hashtags');
+
 // routes posts
 Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::get('/posts', [PostController::class, 'index']);
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store');//pour créer un nouveau post
 
 // routes users
 Route::get('/user/{id}/posts', [UserController::class, 'showPosts']);
 
+// routes pour likes
+Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');
+Route::post('posts/{post}/unlike', [LikeController::class, 'unlike'])->name('posts.unlike');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
