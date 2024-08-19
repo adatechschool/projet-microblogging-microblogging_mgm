@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('follows', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('body');
+            $table->foreignId('follower_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('followed_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
+
+            $table->unique(['follower_id', 'followed_id']); // pour empêcher les doublons
+
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('follows');
     }
 };

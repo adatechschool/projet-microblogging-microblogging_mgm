@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\FollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,10 @@ Route::get('/user/{id}/posts', [UserController::class, 'showPosts']);
 // routes pour likes
 Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');
 Route::post('posts/{post}/unlike', [LikeController::class, 'unlike'])->name('posts.unlike');
+
+// routes pour follow
+Route::post('/follow/{user}', [FollowController::class, 'follow'])->name('follow');
+Route::post('/unfollow/{user}', [FollowController::class, 'unfollow'])->name('unfollow');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

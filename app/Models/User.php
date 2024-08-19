@@ -65,9 +65,16 @@ class User extends Authenticatable
     }
 
     // Relation pour les abonnements
-    public function following()
+    // users que le user connecté suit
+    public function following(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'follows', 'follower_id', 'followed_id');
+    }
+
+    // users qui suivent le user connecté
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'follows', 'followed_id', 'follower_id');
     }
 
     // Relation pour les préférences
