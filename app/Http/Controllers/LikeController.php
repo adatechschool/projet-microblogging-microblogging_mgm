@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -22,7 +23,7 @@ class LikeController extends Controller
             return redirect()->back()->with('status', 'You already liked this post.');
         }
 
-        $user->likedPosts()->attach($post->id);
+        $user->likes()->attach($post->id);
 
         return redirect()->back()->with('status', 'Post liked successfully!');
     }
@@ -37,7 +38,7 @@ class LikeController extends Controller
         }
 
        // Supprimer le like de la relation de pivot
-       $user->likePosts()->detach($user->id);
+       $user->likes()->detach($post->id);
 
        return redirect()->back()->with('success', 'Post unliked.');
    }

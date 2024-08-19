@@ -1,5 +1,29 @@
 <x-app-layout>
+    <p class="text-center text-white">Publications : {{ $user->posts()->count() }} Abonnés : {{ $user->followers()->count() }} Abonnements : {{ $user->following()->count() }}</p>
+    <div>
+        <h3 class="text-center text-white">Préférences :</h3>
+        <ul class="text-center text-white">
+            @foreach($user->hashtags as $hashtag)
+                <li>{{ $hashtag->name }}</li>
+            @endforeach
+        </ul>
+    </div>
     <h1 class="text-3xl dark:bg-slate-900 dark:text-slate-50 font-bold flex items-center justify-center pt-6 pb-14 underline">Les posts de {{ $user->name }}</h1>
+    @if (Auth::check() && Auth::user()->id !== $user->id)
+        @if (Auth::user()->following()->where('followed_id', $user->id)->exists())
+            <!-- Bouton se désabonner -->
+            <form action="{{ route('unfollow', $user->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Unfollow</button>
+            </form>
+        @else
+            <!-- Bouton s'abonner -->
+            <form action="{{ route('follow', $user->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Follow</button>
+            </form>
+        @endif
+    @endif
     @if ($posts->isEmpty())
     <p class="text-center text-white">No posts found for this user.</p>
     @else
