@@ -5,18 +5,7 @@
         </h2>
     </x-slot>
 
-// a mettre sur le fichier de mon mur et celui des utilisateurs
-    <div class="flex justify-center space-x-4 mt-6">
-        <div class="dark:bg-slate-700 dark:text-slate-50 font-bold py-2 px-4 rounded">
-            {{ __('Nombre de posts') }}
-        </div>
-        <div class="dark:bg-slate-700 dark:text-slate-50 font-bold py-2 px-4 rounded">
-            {{ __('Abonnés') }}
-        </div>
-        <div class="dark:bg-slate-700 dark:text-slate-50 font-bold py-2 px-4 rounded">
-            {{ __('Abonnements') }}
-        </div>
-    </div>
+
 
     <div class="flex items-center justify-center min-h-screen py-12 dark:bg-slate-900">
         <div class="dark:bg-slate-700 shadow-lg rounded-lg overflow-hidden flex items-center justify-center" style="width: 300px; height: 300px;">
