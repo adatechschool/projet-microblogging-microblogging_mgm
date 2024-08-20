@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Hashtag;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -45,4 +46,21 @@ class UserController extends Controller
         return redirect()->back()->with('status', 'Hashtags updated successfully!');
     }
 
+
+    public static function searchByUserName(string $name)
+    {
+        //Je viens rechercher tous les users contenant la valeur de mon input.
+        //Je fais un ilike pour ne pas avoir a donner le nom exact
+        $users = User::where('name', 'ILIKE', '%' . $name . '%')->get();
+
+        $posts = new Collection();
+        //Pour chacun de users, je vais chercher leurs posts.
+        //Je viens concatener les posts
+        foreach ($users as $user) {
+            $tmp = $user->posts;
+
+            $posts = $posts->merge($tmp);
+        }
+        return $posts;
+    }
 }
