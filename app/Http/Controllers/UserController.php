@@ -51,6 +51,7 @@ class UserController extends Controller
     {
         //Je viens rechercher tous les users contenant la valeur de mon input.
         //Je fais un ilike pour ne pas avoir a donner le nom exact
+        //ILIKE Permet de rechercher un groupe caractère sans tenir compte de la Case (majuscule ou minuscule)
         $users = User::where('name', 'ILIKE', '%' . $name . '%')->get();
 
         $posts = new Collection();
