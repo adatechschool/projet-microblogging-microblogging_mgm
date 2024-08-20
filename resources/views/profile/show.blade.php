@@ -59,7 +59,21 @@
                     @foreach($myPosts as $myPost)
                     <div class="p-4 rounded-md bg-slate-100">
                         <p class="text-sm">{{ $myPost->title }}</p>
-                        <p class="text-sm">{{ $myPost->body }}</p>
+                        @if ($myPost->body)
+                            <p>{{ $myPost->body }}</p>
+                        @endif
+                        @if ($myPost->photo)
+                            <img src="{{ asset('uploads/' . $post->photo) }}" alt="Post Image" style="max-width: 100%;">
+                        @endif
+                        @if($myPost->hashtags)
+                                <p ,="text-lg font-semibold">Mes Préférences :</p>
+                                <div class="mt-2">
+                                    @foreach($hashtags as $hashtag)
+                                        <span class="inline-block bg-blue-200 text-blue-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">{{ $hashtag->name }}</span>
+                                    @endforeach
+                                </div>
+                        @endif
+                        </div>
                     </div>
                     @endforeach
                 </div>

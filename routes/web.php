@@ -29,9 +29,11 @@ Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile
 Route::post('/users/{user}/update-hashtags', [UserController::class, 'updateHashtags'])->name('users.update-hashtags');
 
 // routes posts
-Route::get('/posts/{id}', [PostController::class, 'show']);
-Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');//pour créer un nouveau post
+Route::get('/posts/{id}', [PostController::class, 'show']);
+Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
 // routes users
 Route::get('/user/{id}/posts', [UserController::class, 'showPosts']);

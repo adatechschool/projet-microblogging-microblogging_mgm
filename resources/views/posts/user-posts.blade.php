@@ -38,6 +38,23 @@
                         <p class="mt-2 dark:text-slate-50">{{ $post->body }}</p>
                     </div>
                 </div>
+                <div class="text-white">
+                    <strong>Hashtags:</strong>
+                    @if ($post->hashtags->isEmpty())
+                        <p>No hashtags associated with this post.</p>
+                    @else
+                        <ul>
+                            @foreach ($post->hashtags as $hashtag)
+                                <li>#{{ $hashtag->name }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger text-white">Delete post</button>
+                </form>
                 <!-- Bouton Like et compteur -->
                 <div class="flex items-center justify-end mt-2 p-4 dark:text-slate-50">
                     @if (auth()->user()->hasLiked($post))

@@ -30,7 +30,8 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'body' => 'required|string',
+            'body' => 'nullable|string',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'hashtags' => 'nullable|string'
         ]);
 
@@ -39,6 +40,16 @@ class PostController extends Controller
             'body' => $request->input('body'),
             'user_id' => auth()->id()
         ]);
+
+        // Gestion de l'ajout de la photo
+        if ($request->hasFile('photo')) {
+            $fileName = time() . '.' . $request->photo->extension();
+            $request->photo->move(public_path('uploads'), $fileName);
+
+            // Enregistrer le nom de la photo dans la base de données
+            $post->photo = $fileName;  
+            $post->save();
+    }
 
         $hashtags = explode(',', $request->input('hashtags'));
 
@@ -49,4 +60,22 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->with('status', 'Post created successfully!');
     }
+
+    public function destroy($id)
+{
+    $post = Post::findOrFail($id);
+
+    // Si le post a une photo, supprimez-la du serveur
+    if ($post->photo) {
+        $photoPath = public_path('uploads/' . $post->photo);
+        if (file_exists($photoPath)) {
+            unlink($photoPath);
+        }
+    }
+
+    // Supprimer le post de la base de données
+    $post->delete();
+
+    return redirect()->route('posts.index')->with('status', 'Post deleted successfully!');
+}
 }

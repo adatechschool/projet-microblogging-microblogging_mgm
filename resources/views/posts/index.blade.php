@@ -10,6 +10,18 @@
                     <h2 class="text-mg font-bold dark:text-slate-50 italic">{{ $post->title }}</h2>
                     <a href="{{ url('/posts', $post->id) }}" class=" dark:text-slate-300">Voir le post</a>
                 </div>
+                <div class="text-white">
+                    <strong>Hashtags:</strong>
+                    @if ($post->hashtags->isEmpty())
+                        <p>No hashtags associated with this post.</p>
+                    @else
+                        <ul>
+                            @foreach ($post->hashtags as $hashtag)
+                                <li>#{{ $hashtag->name }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
             </div>
         @endforeach
     </div>
