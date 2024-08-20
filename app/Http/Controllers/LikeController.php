@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -37,9 +38,9 @@ class LikeController extends Controller
             return redirect()->back()->with('error', 'You have not liked this post.');
         }
 
-       // Supprimer le like de la relation de pivot
-       $user->likes()->detach($post->id);
+        // Supprimer le like de la relation de pivot
+        $user->likes()->detach($post->id);
 
-       return redirect()->back()->with('success', 'Post unliked.');
-   }
+        return redirect()->back()->with('success', 'Post unliked.');
+    }
 }

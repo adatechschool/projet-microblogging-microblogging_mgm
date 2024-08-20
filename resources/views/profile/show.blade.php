@@ -6,7 +6,7 @@
          <!-- Display User Hashtags -->
          <div class="mt-2">
             @if($hashtags->isNotEmpty())
-                <p class="text-lg font-semibold">Mes Préférences :</p>
+                <p ,="text-lg font-semibold">Mes Préférences :</p>
                 <div class="mt-2">
                     @foreach($hashtags as $hashtag)
                         <span class="inline-block bg-blue-200 text-blue-800 text-sm font-medium mr-2 mb-2 px-2.5 py-0.5 rounded">{{ $hashtag->name }}</span>
@@ -37,18 +37,32 @@
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Abonnements') }}</h3>
-                @foreach($following as $followedUser)
+                    <div>
+                        {{ $followingCount }}
+                    </div>
+                {{-- @foreach($following as $followedUser)
                     <div class="mt-2">
                         <p class="text-sm">{{ $followedUser->name }}</p>
                     </div>
-                @endforeach
+                @endforeach --}}
             </div>
 
             <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Préférences') }}</h3>
-                @foreach($preferences as $preference)
+                {{-- @foreach($preferences as $preference)
                     <p class="text-sm">#{{ $preference->name }}</p>
-                @endforeach
+                @endforeach --}}
+            </div>
+            <div class="bg-white dark:bg-gray-800 shadow sm:rounded-lg p-6">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Mes posts') }}</h3>
+                <div class="flex flex-col gap-3 items-start justify-center">
+                    @foreach($myPosts as $myPost)
+                    <div class="p-4 rounded-md bg-slate-100">
+                        <p class="text-sm">{{ $myPost->title }}</p>
+                        <p class="text-sm">{{ $myPost->body }}</p>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

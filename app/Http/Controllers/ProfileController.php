@@ -16,17 +16,19 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
 
-     public function show(User $user): View
-     {
-         // Charger les données nécessaires pour la vue
-         $likedPosts = $user->likedPosts;
-         $likedPostsCount = $likedPosts->count();
-         $following = $user->following;
-         $followingCount = $following->count();
-         $hashtags = $user->hashtags;
- 
-         return view('profile.show', compact('user', 'likedPosts', 'likedPostsCount', 'following', 'followingCount', 'hashtags'));
-     }
+    public function show(User $user): View
+    {
+        // Charger les données nécessaires pour la vue
+        $myPosts = $user->posts;
+        $likedPosts = $user->likes;
+        $likedPostsCount = $likedPosts->count();
+        // $following = $user->following;
+        // $followingCount = $following->count();
+        $followingCount = 123; //Valeur en dur le temps que le back fonctionne
+        $hashtags = $user->hashtags;
+
+        return view('profile.show', compact('user', 'likedPosts', 'likedPostsCount', /*'following',*/ 'followingCount', 'hashtags', 'myPosts'));
+    }
     public function edit(Request $request): View
     {
         return view('profile.edit', [

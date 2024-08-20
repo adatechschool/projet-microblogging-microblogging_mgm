@@ -83,4 +83,21 @@ class User extends Authenticatable
         return $this->morphToMany(Hashtag::class, 'hashtagable');
     }
 }
+/**
+ * 
+ * 
+ * ?>
 
+// <!-- Code pour la seconde Navbar-->
+// <nav>
+    // <ul>
+        // <li><a href="{{ route('home') }}">Publications</a></li>
+        // <li><a href="{{ route('profile') }}">Followers</a></li>
+        // <li><a href="{{ route('posts.index') }}">Suivi(e)s</a></li>
+
+        // </ul>
+    // </nav>
+
+// <?php
+
+ */

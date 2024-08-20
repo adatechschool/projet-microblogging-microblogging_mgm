@@ -30,11 +30,11 @@
 
             <!-- Update Hashtags -->
             <div class="p-4 sm:p-8 bg-white dark:bg-slate-700 shadow sm:rounded-lg">
-                <div class="max-w-xl">
+                <div class="max-w-xl w-full">
                     <form method="POST" action="{{ route('users.update-hashtags', auth()->id()) }}">
                         @csrf
                         <label for="hashtags" class="dark:text-slate-50">Your Hashtags (comma-separated):</label>
-                        <input class="dark:border-grey-900 rounded-md dark:bg-slate-900 flex flex-col " type="text" name="hashtags" id="hashtags" value="{{ $user->hashtags->pluck('name')->implode(', ') }}" class="block mt-1 w-full">
+                        <input class="dark:border-grey-900 rounded-md dark:bg-slate-900 flex flex-col w-full dark:text-white" type="text" name="hashtags" id="hashtags" value="{{ $user->hashtags->pluck('name')->implode(', ') }}" class="block mt-1 w-full">
 
                         <button type="submit" class="mt-4 dark:bg-slate-50 dark:text-slate-950 py-2 px-4 rounded">Update Hashtags</button>
                     </form>
