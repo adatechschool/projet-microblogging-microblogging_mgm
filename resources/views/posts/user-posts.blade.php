@@ -1,13 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posts of {{ $user->name }}</title>
-</head>
-
-<body>
+<x-app-layout>
     <h1 class="dark:text-slate-500">Posts of {{ $user->name }}</h1>
 
     @if ($posts->isEmpty())
@@ -36,11 +27,13 @@
                     </ul>
                     @endif
                 </div>
-                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger text-white">Delete post</button>
-                </form>
+                @if (auth()->user()->id == $user->id)
+                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-slate-50 text-slate-800 font-bold p-1 rounded ">Delete post</button>
+                    </form>
+                @endif
                 <!-- Bouton Like et compteur -->
                 <div class="flex items-center justify-end mt-2 p-4 dark:text-slate-50">
                     @if (auth()->user()->hasLiked($post))
@@ -70,6 +63,4 @@
         @endforeach
     </div>
     @endif
-</body>
-
-</html>
+</x-app-layout>
