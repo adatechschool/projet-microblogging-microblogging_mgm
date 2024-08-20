@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Hashtag;
-use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -23,6 +23,7 @@ class PostController extends Controller
 
     public function create()
     {
+        error_log('LA SAL');
         return view('posts.create');
     }
 
@@ -47,9 +48,9 @@ class PostController extends Controller
             $request->photo->move(public_path('uploads'), $fileName);
 
             // Enregistrer le nom de la photo dans la base de données
-            $post->photo = $fileName;  
+            $post->photo = $fileName;
             $post->save();
-    }
+        }
 
         $hashtags = explode(',', $request->input('hashtags'));
 
@@ -62,36 +63,41 @@ class PostController extends Controller
     }
 
     public function destroy($id)
-{
-    $post = Post::findOrFail($id);
+    {
+        $post = Post::findOrFail($id);
 
-    // Si le post a une photo, supprimez-la du serveur
-    if ($post->photo) {
-        $photoPath = public_path('uploads/' . $post->photo);
-        if (file_exists($photoPath)) {
-            unlink($photoPath);
+        // Si le post a une photo, supprimez-la du serveur
+        if ($post->photo) {
+            $photoPath = public_path('uploads/' . $post->photo);
+            if (file_exists($photoPath)) {
+                unlink($photoPath);
+            }
         }
+
+        // Supprimer le post de la base de données
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('status', 'Post deleted successfully!');
     }
 
-    // Supprimer le post de la base de données
-    $post->delete();
 
-    return redirect()->route('posts.index')->with('status', 'Post deleted successfully!');
-}
-
-
-public function searchByHashtag($hashtagName)
+    public function searchByHashtag(Request $request)
     {
-        $hashtag = Hashtag::where('name', $hashtagName)->first();
+        //Je recupère la valeur de mon input;
+        $searchValue = $request->input('search-value');
 
-        if (!$hashtag) {
-            return redirect()->route('posts.index')->with('status', 'No posts found for this hashtag.');
-        }
+        // $hashtag = Hashtag::where('name', $searchValue)->first();
+        $hashtags = Hashtag::where('name', 'ILIKE', '%' . $searchValue . '%')->get();
 
         // Récupérer tous les posts liés à ce hashtag via la relation polymorphe
-        $posts = $hashtag->posts;
+        $posts = new Collection();
+        foreach ($hashtags as $hashtag) {
+            $_postsByHashtag = $hashtag->posts;
+            $posts = $posts->merge($_postsByHashtag);
+        }
+        $_usersPosts = app('App\Http\Controllers\UserController')->searchByUserName($searchValue);
+        $posts = $posts->merge($_usersPosts);
 
         return view('posts.index', compact('posts'));
     }
-
 }
