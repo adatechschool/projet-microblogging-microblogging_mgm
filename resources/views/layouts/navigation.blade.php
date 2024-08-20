@@ -18,6 +18,29 @@
                 </div>
             </div>
 
+            <div class="flex flex-col items-center justify-center">
+                <form method="POST" action="{{ route('posts.searchByHashtag') }}">
+                    @csrf
+                    <div class="flex items-center justify-center">
+                        <input
+                            class="h-8 rounded-l-md border-none placeholder:text-sm min-w-72 text-sm"
+                            placeholder="Rechercher des posts par # ou nom..."
+                            type="search"
+                            id="search-value"
+                            name="search-value"
+                        />
+                        <button
+                            class="bg-white h-8 w-8 flex items-center justify-center rounded-r-md pr-2"
+                            type="submit"
+                        > 
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#212121" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                            </div>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
