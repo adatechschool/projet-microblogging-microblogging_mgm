@@ -12,8 +12,12 @@ class LikeController extends Controller
 {
     public function like(Post $post)
     {
-        $user = Auth::user();
+        //On récupère le user qui fait la requete
+        $authenticatedUser = Auth::user();
 
+        //On récupère le model user associé à celui qui fait la requete
+        //Même si la donnée est la même, c'est le modèle User qui possède la méthode has_liked.
+        $user = User::find($authenticatedUser->id);
         // Empêcher l'utilisateur de liker son propre post
         if ($post->user_id == $user->id) {
             return redirect()->back()->with('error', 'You cannot like your own post.');
@@ -31,7 +35,9 @@ class LikeController extends Controller
 
     public function unlike(Post $post)
     {
-        $user = Auth::user();
+        $authenticatedUser = Auth::user();
+
+        $user = User::find($authenticatedUser->id);
 
         // Vérifier si l'utilisateur a déjà liké ce post
         if (!$user->hasLiked($post)) {
