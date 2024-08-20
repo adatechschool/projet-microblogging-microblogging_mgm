@@ -31,10 +31,10 @@ Route::post('/users/{user}/update-hashtags', [UserController::class, 'updateHash
 // routes posts
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::post('/posts', [PostController::class, 'store'])->name('posts.store');//pour créer un nouveau post
+Route::post('/posts', [PostController::class, 'store'])->name('posts.store'); //pour créer un nouveau post
 Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
-Route::get('/posts/hashtag/{hashtag}', [PostController::class, 'searchByHashtag'])->name('posts.searchByHashtag');
+Route::post('/posts/hashtag', [PostController::class, 'searchByHashtag'])->name('posts.searchByHashtag');
 
 
 // routes users
@@ -58,4 +58,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
