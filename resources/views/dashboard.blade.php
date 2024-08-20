@@ -6,7 +6,6 @@
     </x-slot>
 
 
-
     <div class="flex items-center justify-center min-h-screen py-12 dark:bg-slate-900">
         <div class="dark:bg-slate-700 shadow-lg rounded-lg overflow-hidden flex items-center justify-center" style="width: 300px; height: 300px;">
             <div class="flex flex-col items-center justify-center h-full p-6 dark:text-slate-50">
