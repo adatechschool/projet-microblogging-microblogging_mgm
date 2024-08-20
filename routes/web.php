@@ -34,6 +34,8 @@ Route::get('/posts/create', [PostController::class, 'create'])->name('posts.crea
 Route::post('/posts', [PostController::class, 'store'])->name('posts.store');//pour créer un nouveau post
 Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::delete('/posts/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::get('/posts/hashtag/{hashtag}', [PostController::class, 'searchByHashtag'])->name('posts.searchByHashtag');
+
 
 // routes users
 Route::get('/user/{id}/posts', [UserController::class, 'showPosts']);

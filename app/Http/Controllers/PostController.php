@@ -78,4 +78,20 @@ class PostController extends Controller
 
     return redirect()->route('posts.index')->with('status', 'Post deleted successfully!');
 }
+
+
+public function searchByHashtag($hashtagName)
+    {
+        $hashtag = Hashtag::where('name', $hashtagName)->first();
+
+        if (!$hashtag) {
+            return redirect()->route('posts.index')->with('status', 'No posts found for this hashtag.');
+        }
+
+        // Récupérer tous les posts liés à ce hashtag via la relation polymorphe
+        $posts = $hashtag->posts;
+
+        return view('posts.index', compact('posts'));
+    }
+
 }
