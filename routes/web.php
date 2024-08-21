@@ -38,7 +38,7 @@ Route::post('/posts/hashtag', [PostController::class, 'searchByHashtag'])->name(
 
 
 // routes users
-Route::get('/user/{id}/posts', [UserController::class, 'showPosts']);
+Route::get('/user/{id}/posts', [UserController::class, 'showPosts'])->name('user.posts');
 
 // routes pour likes
 Route::post('/posts/{post}/like', [LikeController::class, 'like'])->name('posts.like');

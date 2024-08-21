@@ -52,6 +52,13 @@ class UserController extends Controller
         //ILIKE Permet de rechercher un groupe caractère sans tenir compte de la Case (majuscule ou minuscule)
         $users = User::where('name', 'ILIKE', '%' . $name . '%')->get();
 
+        // Si un seul utilisateur est trouvé, rediriger vers son mur.
+        if ($users->count() === 1) {
+            return redirect()->route('user.posts', ['id' => $users->first()->id]);
+        }
+
+        // Si plusieurs utilisateurs sont trouvés, renvoyer la liste des utilisateurs (ou choisir le premier par exemple).
+        // Vous pouvez également retourner une vue qui affiche cette liste pour que l'utilisateur puisse choisir.
         $posts = new Collection();
         //Pour chacun de users, je vais chercher leurs posts.
         //Je viens concatener les posts
@@ -60,6 +67,7 @@ class UserController extends Controller
 
             $posts = $posts->merge($tmp);
         }
-        return $posts;
+        // Rediriger vers une vue de recherche si plusieurs utilisateurs sont trouvés (optionnel).
+    return view('posts.index', compact('posts', 'users'));
     }
 }

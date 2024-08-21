@@ -95,9 +95,17 @@ class PostController extends Controller
             $_postsByHashtag = $hashtag->posts;
             $posts = $posts->merge($_postsByHashtag);
         }
-        $_usersPosts = app('App\Http\Controllers\UserController')->searchByUserName($searchValue);
-        $posts = $posts->merge($_usersPosts);
+        
+        // Rechercher par nom d'utilisateur si applicable
+    $_usersPosts = UserController::searchByUserName($searchValue);
+    
+    // Si la recherche retourne une redirection, la suivre
+    if ($_usersPosts instanceof \Illuminate\Http\RedirectResponse) {
+        return $_usersPosts;
+    }
 
-        return view('posts.index', compact('posts'));
+    $posts = $posts->merge($_usersPosts);
+
+    return view('posts.index', compact('posts'));
     }
 }
