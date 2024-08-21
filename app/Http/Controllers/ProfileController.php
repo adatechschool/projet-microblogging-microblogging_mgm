@@ -22,9 +22,9 @@ class ProfileController extends Controller
         $myPosts = $user->posts;
         $likedPosts = $user->likes;
         $likedPostsCount = $likedPosts->count();
-        // $following = $user->following;
-        // $followingCount = $following->count();
-        $followingCount = 123; //Valeur en dur le temps que le back fonctionne
+        $following = $user->following;
+        $followingCount = $following->count();
+        // $followingCount = 123; //Valeur en dur le temps que le back fonctionne
         $hashtags = $user->hashtags;
 
         return view('profile.show', compact('user', 'likedPosts', 'likedPostsCount', /*'following',*/ 'followingCount', 'hashtags', 'myPosts'));

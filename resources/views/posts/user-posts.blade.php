@@ -1,8 +1,31 @@
 <x-app-layout>
-    <h1 class="dark:text-slate-500">Posts of {{ $user->name }}</h1>
-
+    <p class="text-center text-white">Publications : {{ $user->posts()->count() }} Abonnés : {{ $user->followers()->count() }} Abonnements : {{ $user->following()->count() }}</p>
+    <div>
+        <h3 class="text-center text-white">Préférences :</h3>
+        <ul class="text-center text-white">
+            @foreach($user->hashtags as $hashtag)
+                <li>{{ $hashtag->name }}</li>
+            @endforeach
+        </ul>
+    </div>
+    <h1 class="text-3xl dark:bg-slate-900 dark:text-slate-50 font-bold flex items-center justify-center pt-6 pb-14 underline">Les posts de {{ $user->name }}</h1>
+    @if (Auth::check() && Auth::user()->id !== $user->id)
+        @if (Auth::user()->following()->where('followed_id', $user->id)->exists())
+            <!-- Bouton se désabonner -->
+            <form action="{{ route('unfollow', $user->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Unfollow</button>
+            </form>
+        @else
+            <!-- Bouton s'abonner -->
+            <form action="{{ route('follow', $user->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Follow</button>
+            </form>
+        @endif
+    @endif
     @if ($posts->isEmpty())
-    <p>No posts found for this user.</p>
+    <p class="text-center text-white">No posts found for this user.</p>
     @else
     <div class="flex flex-wrap justify-center">
         @foreach ($posts as $post)
@@ -18,49 +41,53 @@
                 <div class="text-white">
                     <strong>Hashtags:</strong>
                     @if ($post->hashtags->isEmpty())
-                    <p>No hashtags associated with this post.</p>
+                        <p>No hashtags associated with this post.</p>
                     @else
-                    <ul>
-                        @foreach ($post->hashtags as $hashtag)
-                        <li>#{{ $hashtag->name }}</li>
-                        @endforeach
-                    </ul>
+                        <ul>
+                            @foreach ($post->hashtags as $hashtag)
+                                <li>#{{ $hashtag->name }}</li>
+                            @endforeach
+                        </ul>
                     @endif
                 </div>
-                @if (auth()->user()->id == $user->id)
-                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="bg-slate-50 text-slate-800 font-bold p-1 rounded ">Delete post</button>
-                    </form>
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger text-white">Delete post</button>
+            
+            @if (auth()->user()->id == $user->id)
+                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="bg-slate-50 text-slate-800 font-bold p-1 rounded ">Delete post</button>
+                </form>
+            @endif
+            <!-- Bouton Like et compteur -->
+            <div class="flex items-center justify-end mt-2 p-4 dark:text-slate-50">
+                @if (auth()->user()->hasLiked($post))
+                <form method="POST" action="{{ route('posts.unlike', $post->id) }}">
+                    @csrf
+                    <button type="submit" class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                        </svg>
+                        <span class="ml-1">{{ count($post->likes) }}</span>
+                    </button>
+                </form>
+                @else
+                <form method="POST" action="{{ route('posts.like', $post->id) }}">
+                    @csrf
+                    <button type="submit" class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                        </svg>
+                        <span class="ml-1">{{ count($post->likes) }}</span>
+                    </button>
+                </form>
                 @endif
-                <!-- Bouton Like et compteur -->
-                <div class="flex items-center justify-end mt-2 p-4 dark:text-slate-50">
-                    @if (auth()->user()->hasLiked($post))
-                    <form method="POST" action="{{ route('posts.unlike', $post->id) }}">
-                        @csrf
-                        <button type="submit" class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart">
-                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                            </svg>
-                            <span class="ml-1">{{ count($post->likes) }}</span>
-                        </button>
-                    </form>
-                    @else
-                    <form method="POST" action="{{ route('posts.like', $post->id) }}">
-                        @csrf
-                        <button type="submit" class="flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart">
-                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-                            </svg>
-                            <span class="ml-1">{{ count($post->likes) }}</span>
-                        </button>
-                    </form>
-                    @endif
-                </div>
             </div>
         </div>
-        @endforeach
     </div>
-    @endif
+    @endforeach
+</div>
+@endif
 </x-app-layout>
