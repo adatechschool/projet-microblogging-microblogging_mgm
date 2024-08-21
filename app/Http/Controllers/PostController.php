@@ -23,7 +23,7 @@ class PostController extends Controller
 
     public function create()
     {
-        error_log('LA SAL');
+        error_log('error');
         return view('posts.create');
     }
 

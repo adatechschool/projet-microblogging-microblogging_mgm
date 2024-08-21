@@ -45,8 +45,6 @@ class UserController extends Controller
 
         return redirect()->back()->with('status', 'Hashtags updated successfully!');
     }
-
-
     public static function searchByUserName(string $name)
     {
         //Je viens rechercher tous les users contenant la valeur de mon input.

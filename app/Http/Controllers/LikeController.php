@@ -19,7 +19,7 @@ class LikeController extends Controller
         //Même si la donnée est la même, c'est le modèle User qui possède la méthode has_liked.
         $user = User::find($authenticatedUser->id);
         // Empêcher l'utilisateur de liker son propre post
-        if ($post->user_id == $user->id) {
+        if ($post->user_id == $authenticatedUser->id) {
             return redirect()->back()->with('error', 'You cannot like your own post.');
         }
 
