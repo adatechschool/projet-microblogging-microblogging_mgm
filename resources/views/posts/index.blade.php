@@ -3,8 +3,10 @@
     <div class="flex flex-wrap justify-center">
         @foreach($posts as $post)
             <div class="relative m-20 p-2 dark:bg-slate-700 rounded-lg w-full md:w-1/2 lg:w-1/3">
-                <img src="{{ $post->image_url }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
-                <div class="absolute bottom-2 right-2">
+                @if ($post->photo)
+                <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
+                @endif
+                    <div class="absolute bottom-2 right-2">
                 </div>
                 <div class="p-4">
                     <h2 class="text-mg font-bold dark:text-slate-50 italic">{{ $post->title }}</h2>

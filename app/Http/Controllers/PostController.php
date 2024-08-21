@@ -44,12 +44,13 @@ class PostController extends Controller
 
         // Gestion de l'ajout de la photo
         if ($request->hasFile('photo')) {
-            $fileName = time() . '.' . $request->photo->extension();
+            $fileName = time() . '.' . $request->photo->getClientOriginalExtension();
+            // $request->photo->storeAs('uploads', $fileName);            
             $request->photo->move(public_path('uploads'), $fileName);
 
             // Enregistrer le nom de la photo dans la base de données
             $post->photo = $fileName;
-            $post->save();
+            
         }
 
         $hashtags = explode(',', $request->input('hashtags'));
@@ -58,7 +59,7 @@ class PostController extends Controller
             $tag = Hashtag::firstOrCreate(['name' => trim($hashtag, '# ')]);
             $post->hashtags()->attach($tag);
         }
-
+        $post->save();
         return redirect()->route('posts.index')->with('status', 'Post created successfully!');
     }
 

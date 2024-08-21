@@ -16,7 +16,7 @@
                
                 <!-- photo -->
                 <div class="flex-grow mb-4">
-                    <img src="chemin/vers/votre-photo.jpg" alt="Photo" class="w-full h-auto object-cover rounded-lg">
+                    <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
                 </div>
                 
                 <h1 class="text-lg italic dark:text-slate-50 font-semibold mb-4">{{ $post->title }}</h1>

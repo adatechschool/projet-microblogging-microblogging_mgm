@@ -1,26 +1,36 @@
 <x-app-layout>
-    <p class="text-center text-white">Publications : {{ $user->posts()->count() }} Abonnés : {{ $user->followers()->count() }} Abonnements : {{ $user->following()->count() }}</p>
-    <div>
-        <h3 class="text-center text-white">Préférences :</h3>
-        <ul class="text-center text-white">
-            @foreach($user->hashtags as $hashtag)
-                <li>{{ $hashtag->name }}</li>
-            @endforeach
-        </ul>
-    </div>
+    <p class="text-center text-white flex justify-center space-x-4 m-6">
+        <span class="border border-slate-300 rounded-lg px-3 py-1">Publications : {{ $user->posts()->count() }}</span>
+        <span class="border border-slate-300 rounded-lg px-3 py-1">Abonnés : {{ $user->followers()->count() }}</span>
+        <span class="border border-slate-300 rounded-lg px-3 py-1">Abonnements : {{ $user->following()->count() }}</span>
+    </p>
+    <p class="text-center text-white flex justify-center space-x-4 m-6">
+     <span class="border border-slate-300 rounded-lg px-3 py-1">
+            Préférences :
+            <span class="text-slate-50">
+                @foreach($user->hashtags as $hashtag)
+                    {{ $loop->first ? '' : ', ' }}{{ $hashtag->name }}
+                @endforeach
+            </span>
+        </span>
+    </p>
     <h1 class="text-3xl dark:bg-slate-900 dark:text-slate-50 font-bold flex items-center justify-center pt-6 pb-14 underline">Les posts de {{ $user->name }}</h1>
     @if (Auth::check() && Auth::user()->id !== $user->id)
         @if (Auth::user()->following()->where('followed_id', $user->id)->exists())
             <!-- Bouton se désabonner -->
             <form action="{{ route('unfollow', $user->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Unfollow</button>
+                <div class="flex justify-center mb-4">
+                    <button type="submit" class="border-solid border-2 border-slate-50 justify-center w-auto p-2 bg-slate-700 text-slate-50 py-2 rounded shadow hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900">Unfollow</button>
+                    </div>
             </form>
         @else
             <!-- Bouton s'abonner -->
             <form action="{{ route('follow', $user->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Follow</button>
+                <div class="flex justify-center mb-4">
+                    <button type="submit" class="border-solid border-2 border-slate-50 justify-center w-auto p-2 bg-slate-700 text-slate-50 py-2 rounded shadow hover:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900">Follow</button>
+                </div>
             </form>
         @endif
     @endif
@@ -30,7 +40,7 @@
     <div class="flex flex-wrap justify-center">
         @foreach ($posts as $post)
         <div class="relative m-20 p-2 dark:bg-slate-700 rounded-lg w-full md:w-1/2 lg:w-1/3 flex flex-col">
-            <img src="{{ $post->image_url }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
+            <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
             <div class="flex flex-col justify-between flex-grow">
                 <div class="p-2 flex flex-col justify-between flex-grow">
                     <div class="mt-auto">
@@ -52,7 +62,6 @@
                 </div>
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger text-white">Delete post</button>
             
             @if (auth()->user()->id == $user->id)
                 <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
