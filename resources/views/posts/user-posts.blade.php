@@ -40,8 +40,10 @@
     <div class="flex flex-wrap justify-center">
         @foreach ($posts as $post)
         <div class="relative m-20 p-2 dark:bg-slate-700 rounded-lg w-full md:w-1/2 lg:w-1/3 flex flex-col">
-            <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
-            <div class="flex flex-col justify-between flex-grow">
+            @if ($post->photo)
+                <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
+            @endif
+                <div class="flex flex-col justify-between flex-grow">
                 <div class="p-2 flex flex-col justify-between flex-grow">
                     <div class="mt-auto">
                         <h2 class="text-lg font-bold dark:text-slate-50 italic">{{ $post->title }}</h2>

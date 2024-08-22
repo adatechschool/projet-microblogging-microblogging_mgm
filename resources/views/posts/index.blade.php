@@ -4,7 +4,7 @@
         @foreach($posts as $post)
             <div class="relative m-20 p-2 dark:bg-slate-700 rounded-lg w-full md:w-1/2 lg:w-1/3">
                 @if ($post->photo)
-                <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
+                    <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
                 @endif
                     <div class="absolute bottom-2 right-2">
                 </div>

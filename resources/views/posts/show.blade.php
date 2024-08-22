@@ -16,7 +16,9 @@
                
                 <!-- photo -->
                 <div class="flex-grow mb-4">
-                    <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
+                    @if ($post->photo)
+                        <img src="{{ asset('uploads/' . $post->photo) }}" alt="Image de {{ $post->title }}" class="w-full h-48 object-cover rounded-t-lg">
+                    @endif
                 </div>
                 
                 <h1 class="text-lg italic dark:text-slate-50 font-semibold mb-4">{{ $post->title }}</h1>

@@ -13,7 +13,7 @@ class Hashtag extends Model
 
     public function users()
     {
-        return $this->morphToMany(User::class, 'hashtagable');
+        return $this->morphedByMany(User::class, 'hashtagable');
     }
 
     public function posts()

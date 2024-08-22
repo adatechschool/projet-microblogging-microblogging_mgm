@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Hashtag;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -90,12 +91,25 @@ class PostController extends Controller
         // $hashtag = Hashtag::where('name', $searchValue)->first();
         $hashtags = Hashtag::where('name', 'ILIKE', '%' . $searchValue . '%')->get();
 
-        // Récupérer tous les posts liés à ce hashtag via la relation polymorphe
+        // Initialiser une collection vide pour les posts
         $posts = new Collection();
+        
+        // Récupérer tous les posts liés à ces hashtags
         foreach ($hashtags as $hashtag) {
             $_postsByHashtag = $hashtag->posts;
             $posts = $posts->merge($_postsByHashtag);
         }
+
+        // Récupérer les utilisateurs liés aux hashtags trouvés
+        foreach ($hashtags as $hashtag) {
+            $users = $hashtag->users;
+            foreach ($users as $user) {
+                $posts = $posts->merge($user->posts);
+            }
+        }
+
+        // Supprimer les doublons de posts dans la collection
+        $posts = $posts->unique('id');
         
         // Rechercher par nom d'utilisateur si applicable
     $_usersPosts = UserController::searchByUserName($searchValue);
